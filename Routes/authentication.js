@@ -9,7 +9,8 @@ router.post('/',(req,res)=>{
         }
         else{
             const {name,email,picture,userID,accessToken} = req.body;
-            const newUser = new User({name,email,picture,userID,accessToken});
+            const image = picture.data.url;
+            const newUser = new User({name,email,picture: image,userID,accessToken});
             
             newUser.save((err,created_user)=>{
                 if(err){
