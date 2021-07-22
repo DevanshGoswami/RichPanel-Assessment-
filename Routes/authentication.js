@@ -5,6 +5,8 @@ const User = require('../Models/userModel');
 router.post('/',(req,res)=>{
     User.findOne({userID: req.body.userID},(err,user)=>{
         if(user){
+            user.accessToken = req.body.accessToken;
+            user.save();
             res.status(200).json(user);
         }
         else{
