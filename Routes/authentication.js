@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require('../Models/userModel');
-const axios = require('axios');
+
 
 router.post('/',(req,res)=>{
     User.findOne({userID: req.body.userID},async(err,user)=>{
