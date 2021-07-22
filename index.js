@@ -5,7 +5,7 @@ const app = express();
 const port = process.env.PORT;
 const bodyParser = require("body-parser");
 const cors = require('cors');
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 const router = require('./Routes');
 
