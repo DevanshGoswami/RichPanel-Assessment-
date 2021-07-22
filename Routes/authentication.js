@@ -11,7 +11,7 @@ router.post('/',(req,res)=>{
             res.status(200).json(user);
         }
         else{
-            const {name,email,picture,userID,accessToken, pages} = req.body;
+            const {name,email,picture,userID,accessToken,pages} = req.body;
             const image = picture.data.url;
             const pagesArray = [];
             pages.forEach(page=>{
@@ -22,6 +22,7 @@ router.post('/',(req,res)=>{
                     access_token:page.access_token
                 });
             });
+            console.log(pagesArray);
             const newUser = new User({name,email,picture:image,userID,accessToken,pages:pagesArray});
             
             newUser.save((err,created_user)=>{
