@@ -4,7 +4,7 @@ const User = require('../Models/userModel');
 const axios = require('axios');
 
 router.post('/',(req,res)=>{
-    User.findOne({userID: req.body.userID},async(err,user)=>{
+    User.findOne({userID: req.body.userID},(err,user)=>{
         if(user){
             user.accessToken = req.body.accessToken;
             user.save();
@@ -13,31 +13,34 @@ router.post('/',(req,res)=>{
         else{
             const {name,email,picture,userID,accessToken} = req.body;
             const image = picture.data.url;
-            const pages_response = await axios.get(`https://graph.facebook.com/${userID}/accounts?access_token=${accessToken}`);
-            const pages_data = pages_response.data;
+            axios.get(`https://graph.facebook.com/${userID}/accounts?access_token=${accessToken}`)
+            .then(response => {
+                var pages = [];
+                response.data.forEach((page)=>{
+                    const newPage = {
+                        name: page.name,
+                        category: page.category,
+                        id:page.id,
+                        access_token: page.access_token
+                    }
+                    pages.push(newPage);
 
-            var pages = [];
+                    const newUser = new User({name,email,picture:image,userID,accessToken,pages});
             
-            pages_data.forEach((page)=>{
-                const newPage = {
-                    name: page.name,
-                    category: page.category,
-                    id:page.id,
-                    access_token: page.access_token
-                }
-                pages.push(newPage);
-            });
+                    newUser.save((err,created_user)=>{
+                        if(err){
+                            res.status(200).json(err);
+                        }
+                        else{
+                            res.status(200).json(created_user);
+                        }
+                    });
+                });
+            })
+            .catch(err => {
+                res.status(200).json(err);
+            })
 
-            const newUser = new User({name,email,picture:image,userID,accessToken,pages});
-            
-            newUser.save((err,created_user)=>{
-                if(err){
-                    res.status(200).json(err);
-                }
-                else{
-                    res.status(200).json(created_user);
-                }
-            });
         }
      });
 });
