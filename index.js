@@ -13,6 +13,10 @@ mongoose.connect(process.env.MONGOURL,{ useNewUrlParser: true ,useUnifiedTopolog
 .then(() => console.log( 'Database Connected' ))
 .catch(err => console.log( err ));
 
+// mongoose.connect("mongodb+srv://richpanel:helpdesk@cluster0.8x2qz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",{ useNewUrlParser: true ,useUnifiedTopology: true})
+// .then(() => console.log( 'Database Connected' ))
+// .catch(err => console.log( err ));
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
