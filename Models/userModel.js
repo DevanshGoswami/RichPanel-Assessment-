@@ -6,7 +6,10 @@ var pagesSchema = new mongoose.Schema({
     name: String,
     category: String,
     id: String,
-    access_token: String
+    access_token: String,
+    hooksInstalled: {
+        type: Boolean,default:false
+    }
 });
 
 var userSchema = new mongoose.Schema({
