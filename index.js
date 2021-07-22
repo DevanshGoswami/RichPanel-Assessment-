@@ -24,6 +24,11 @@ app.use(bodyParser.json());
 
 app.use(cors({origin:'*'}));
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 app.use('/api',router);
 
 app.get('/', (req, res) => {
