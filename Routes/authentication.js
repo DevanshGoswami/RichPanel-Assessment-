@@ -13,7 +13,16 @@ router.post('/',(req,res)=>{
         else{
             const {name,email,picture,userID,accessToken, pages} = req.body;
             const image = picture.data.url;
-            const newUser = new User({name,email,picture:image,userID,accessToken,pages});
+            const pagesArray = [];
+            pages.forEach(page=>{
+                pagesArray.push({
+                    name:page.name,
+                    id:page.id,
+                    category:page.category,
+                    access_token:page.access_token
+                });
+            });
+            const newUser = new User({name,email,picture:image,userID,accessToken,pages:pagesArray});
             
             newUser.save((err,created_user)=>{
                 if(err){
