@@ -39,7 +39,7 @@ router.post('/',(req,res)=>{
   
       // Iterates over each entry - there may be multiple if batched
       body.entry.forEach(function(entry) {
-         console.log(entry);
+         console.log(entry.changes[0].value);
       });
   
       // Returns a '200 OK' response to all requests
