@@ -40,9 +40,21 @@ router.post('/',(req,res)=>{
   
       // Iterates over each entry - there may be multiple if batched
       body.entry.forEach(function(entry) {
-         console.log(entry);
-         let webhook_event = entry.messaging[0];
-         console.log(webhook_event);
+        var event = entry.messaging[0] ? {
+          type: "message", value: entry.messaging[0]
+        } :{
+          type: "feedchange", value: entry.changes[0]
+        };
+
+           User.find({'pages.id':body.id},(err,user)=>{
+             user.pages.forEach(page=>{
+               if(page.id === body.id){
+                  page.activity.push(event);
+               }
+             });
+             user.save();
+           })
+         
       });
       // Returns a '200 OK' response to all requests
       res.status(200).send('EVENT_RECEIVED');

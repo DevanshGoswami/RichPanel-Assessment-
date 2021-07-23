@@ -1,7 +1,7 @@
 
 var mongoose = require("mongoose");
 
-var activitySchema = new mongoose.Schema({strict: false});
+var activitySchema = new mongoose.Schema({type: String},{strict: false});
 
 var pagesSchema = new mongoose.Schema({
     name: String,
