@@ -38,7 +38,9 @@ router.post('/',(req,res)=>{
     if (body.object === 'page') {
   
       // Iterates over each entry - there may be multiple if batched
-      console.log(body);
+      body.entry.forEach(function(entry) {
+         console.log(entry);
+      });
   
       // Returns a '200 OK' response to all requests
       res.status(200).send('EVENT_RECEIVED');
