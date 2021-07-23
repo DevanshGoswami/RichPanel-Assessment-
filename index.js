@@ -6,6 +6,7 @@ const port = process.env.PORT;
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const mongoose = require("mongoose");
+const pageRoutes = require('./Routes/pages');
 
 const router = require('./Routes');
 
@@ -22,6 +23,8 @@ app.use(cors());
 
 
 app.use('/api',router);
+
+app.use('/webhook', pageRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
