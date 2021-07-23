@@ -40,7 +40,7 @@ router.post('/',(req,res)=>{
   
       // Iterates over each entry - there may be multiple if batched
       body.entry.forEach(function(entry) {
-        var event = entry.messaging[0] ? {
+        var event = entry.messaging ? {
           type: "message", value: entry.messaging[0]
         } :{
           type: "feedchange", value: entry.changes[0]
