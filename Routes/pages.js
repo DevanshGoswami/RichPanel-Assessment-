@@ -45,8 +45,8 @@ router.post('/',(req,res)=>{
         } :{
           type: "feedchange", value: entry.changes[0]
         };
-
-           User.find({'pages.id':body.id},(err,user)=>{
+        
+           User.aggregate([{'pages.id':body.id}],(err,user)=>{
              user.pages.forEach(page=>{
                if(page.id === body.id){
                   page.activity.push(event);
