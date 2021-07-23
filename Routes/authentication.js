@@ -5,15 +5,8 @@ const User = require('../Models/userModel');
 
 router.post('/',(req,res)=>{
     User.findOne({userID: req.body.userID},async(err,user)=>{
-        if(user){
-            user.accessToken = req.body.accessToken;
-            user.save();
-            res.status(200).json(user);
-        }
-        else{
-            const {name,email,picture,userID,accessToken,pages} = req.body;
-            const image = picture.data.url;
-            const pagesArray = [];
+        const {name,email,picture,userID,accessToken,pages} = req.body;
+        const pagesArray = [];
             pages.forEach(page=>{
                 pagesArray.push({
                     name:page.name,
@@ -22,7 +15,14 @@ router.post('/',(req,res)=>{
                     access_token:page.access_token
                 });
             });
-            console.log(pagesArray);
+        if(user){
+            user.accessToken = req.body.accessToken;
+            user.pages = pagesArray;
+            user.save();
+            res.status(200).json(user);
+        }
+        else{
+            const image = picture.data.url;
             const newUser = new User({name,email,picture:image,userID,accessToken,pages:pagesArray});
             
             newUser.save((err,created_user)=>{
