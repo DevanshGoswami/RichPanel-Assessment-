@@ -39,6 +39,7 @@ router.post('/',(req,res)=>{
   
       // Iterates over each entry - there may be multiple if batched
       console.log(body);
+  
       // Returns a '200 OK' response to all requests
       res.status(200).send('EVENT_RECEIVED');
     } else {
