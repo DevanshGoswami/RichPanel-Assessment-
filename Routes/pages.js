@@ -1,3 +1,4 @@
+const { default: axios } = require("axios");
 const express = require("express");
 const router = express.Router();
 const User = require('../Models/userModel');
@@ -39,17 +40,7 @@ router.post('/',(req,res)=>{
   
       // Iterates over each entry - there may be multiple if batched
       body.entry.forEach(function(entry) {
-         User.find({'pages.id':entry.id},(err,user)=>{
-             if(user){
-                 user.pages.forEach(page=>{
-                     if(page.id === entry.id){
-                         page.activity.push(entry);
-                     }
-                 });
-                user.save();
-                console.log(user);
-             }
-         })
+         console.log(entry);
       });
       // Returns a '200 OK' response to all requests
       res.status(200).send('EVENT_RECEIVED');
@@ -61,22 +52,27 @@ router.post('/',(req,res)=>{
 });
 
 router.get('/enable',(req,res)=>{
-    const {page_id,user_id} = req.body;
-
-        User.findOne({userID:user_id},(err,user)=>{
-           if(err){
-               res.status(200).json(err);
-           }
-           else{
-                user.pages.forEach(page=>{
-                    if(page.id==page_id){
-                        page.hooksInstalled = true;
-                    }
-                });
-                user.save();
-                res.status(200).json({message: "hooks installed"});
-           }
-        });
+    const {page_id,user_id,access_token} = req.body;
+    axios.post(`https://graph.facebook.com/${page_id}/subscribed_apps?subscribed_fields=feed&access_token=${access_token}`)
+    .then(response=>{
+        if(response.data.success === true){
+            User.findOne({userID:user_id},(err,user)=>{
+                if(err){
+                    res.status(200).json(err);
+                }
+                else{
+                     user.pages.forEach(page=>{
+                         if(page.id==page_id){
+                             page.hooksInstalled = true;
+                         }
+                     });
+                     user.save();
+                     res.status(200).json({message: "hooks installed"});
+                }
+             });
+        }
+    })
+    .catch(err=>res.status(200).json(err));
 });
 
 

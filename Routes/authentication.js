@@ -17,7 +17,11 @@ router.post('/',(req,res)=>{
             });
         if(user){
             user.accessToken = req.body.accessToken;
-            user.pages = pagesArray;
+            let index = 0;
+            user.pages.forEach(page=>{
+                page.access_token = pagesArray[index].access_token;
+                index++;
+            })
             user.save();
             res.status(200).json(user);
         }
