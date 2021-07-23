@@ -41,6 +41,8 @@ router.post('/',(req,res)=>{
       // Iterates over each entry - there may be multiple if batched
       body.entry.forEach(function(entry) {
          console.log(entry);
+         let webhook_event = entry.messaging[0];
+         console.log(webhook_event);
       });
       // Returns a '200 OK' response to all requests
       res.status(200).send('EVENT_RECEIVED');
