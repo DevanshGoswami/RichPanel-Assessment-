@@ -1,6 +1,7 @@
 
 var mongoose = require("mongoose");
 
+var activitySchema = new mongoose.Schema({strict: false});
 
 var pagesSchema = new mongoose.Schema({
     name: String,
@@ -9,7 +10,8 @@ var pagesSchema = new mongoose.Schema({
     access_token: String,
     hooksInstalled: {
         type: Boolean,default:false
-    }
+    },
+    activity: [activitySchema]
 });
 
 var userSchema = new mongoose.Schema({

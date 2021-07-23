@@ -31,7 +31,7 @@ router.get('/',(req,res)=>{
 
 
 router.post('/',(req,res)=>{
-
+    
     let body = req.body;
 
     // Checks if this is an event from a page subscription
@@ -39,9 +39,17 @@ router.post('/',(req,res)=>{
   
       // Iterates over each entry - there may be multiple if batched
       body.entry.forEach(function(entry) {
-         console.log(entry);
+         User.find({'pages.id':entry.id},(err,user)=>{
+             if(user){
+                 user.pages.forEach(page=>{
+                     if(page.id === entry.id){
+                         page.activity.push(entry);
+                     }
+                 });
+                user.save();
+             }
+         })
       });
-  
       // Returns a '200 OK' response to all requests
       res.status(200).send('EVENT_RECEIVED');
     } else {
